@@ -1,20 +1,20 @@
-// Data Base
-const Papers=[
-    {id : 1, name : 'Gole'},
-    {id : 2, name : 'Etelaate'},
-    {id : 3, name : 'Abrar'},
-    {id : 4, name : 'Iran'},
-];
+const { result } = require('underscore');
 
+// Data Base
+const PapersModel = require('../models/papes-model')
 
 const getPaper = (req, res)=> {
-    const paper = Papers.find(c => c.id === Number(req.params.id))
-    if (!paper) res.status(404).send("روزنامه یافت نشد")
-    res.send(paper)
+    PapersModel.getPaper(parseInt(req.params.id)).then((result)=>{
+        if (!result) res.status(404).send("روزنامه یافت نشد")
+        res.send(result)
+    })
+    //const paper = Papers.find(c => c.id === Number(req.params.id))
 };
 
 const getPapers =  (req, res)=> {
-    res.send(['Gol','KhabareVarzeshi', 'Sharq', 'Iran'])
+    PapersModel.getPapers().then((result)=>{
+        res.send(result)
+    })
 }
 
 const getPaperSort = (req, res)=>{
@@ -27,18 +27,18 @@ const postPaper = (req, res)=>{
         res.status(400).send("اسم روزنامه مناسب نیست")
         return
     }
-    const NewPaper ={
-        id: Papers.length +1, 
-        name : req.body.name
-    }
-    Papers.push(NewPaper)
-    res.send(NewPaper)
+    PapersModel.insertPapers(req.body.name).then((result)=>{
+        res.send(result)
+    })
 }
 
 const putPaper = (req, res)=>{
+    PapersModel.getPaper(parseInt(req.params.id)).then((result)=>{
+    if (!result) return res.status(404).send("روزنامه یافت نشد")
+    })
 // check papers
-    const paper = Papers.find(c => c.id === Number(req.params.id))
-    if (!paper) return res.status(404).send("روزنامه یافت نشد")
+    //const paper = Papers.find(c => c.id === Number(req.params.id))
+    // if (!paper) return res.status(404).send("روزنامه یافت نشد")
 
 // test deta is true?
     if(!req.body.name || req.body.name.length < 3){
@@ -46,19 +46,19 @@ const putPaper = (req, res)=>{
     return
     }
 
-    paper.name = req.body.name
-    res.send(paper) 
+    PapersModel.updatePaper(parseInt(req.params.id), req.body.name).then((result)=>{
+        res.send(result) 
+    })
 }
 
 const deletePaper = ('/:id', (req, res)=>{
 // check papers
-    const paper = Papers.find(c => c.id === Number(req.params.id))
-    if (!paper) return res.status(404).send("روزنامه یافت نشد")
-
-    const index = Papers.indexOf(paper)
-    Papers.splice(index, 1)
-
-    res.send(paper)
+    PapersModel.getPaper(parseInt(req.params.id)).then((result)=>{
+    if (!result) return res.status(404).send("روزنامه یافت نشد")
+    })
+    PapersModel.deletePaper(parseInt(req.params.id)).then((result)=>{
+        res.send(result)
+    })
 })
 
 module.exports = {
