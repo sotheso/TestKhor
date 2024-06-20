@@ -2,6 +2,10 @@ const UsersModel = require("../models/user-model")
 const Joi = require("joi")
 const _ = require("lodash")
 const bcrypt = require("bcrypt")
+// Token
+const jwt = require("jsonwebtoken")
+// env inport fot secret token key
+require("dotenv").config()
  
 const register = async(req, res, next) => {
     // test ture data inport => best work : use pakage joi
@@ -30,8 +34,11 @@ const register = async(req, res, next) => {
     console.log(result)
 
     const newUser = await UsersModel.getUserByEmail(req.body.email)
+
+    const token = jwt.sign({id: newUser.id}, process.env.SECRET_KEY_TOKEN)
+
     // اگر میخوای فقط اسم و ایمیل رو برگدونه نه پسورد رو = lodash
-    res.send(_.pick(newUser, ["id", "name", "email"]))
+    res.header('Authorization', token).send(_.pick(newUser, ["id", "name", "email"]))
 };
 
 const login = async(req, res, next) => {
@@ -52,7 +59,8 @@ const login = async(req, res, next) => {
     const validpassword = await bcrypt.compare(req.body.password, user.password)
     if (!validpassword) return res.status(400).send("email or password is invalid")
     
-res.send("login")
+    const token = jwt.sign({id: user.id}, process.env.SECRET_KEY_TOKEN)
+    res.send(token)
 };
 
 module.exports= {register, login}

@@ -1,26 +1,19 @@
 const express = require('express')
 const router = express.Router();
 const PapersController = require('../controller/papers-controller')
+const auth = require("../middelwares/auth")
 
-// For Papers
-router.get('/', PapersController.getPapers);
+// اگر بخوای برای همه میدلور ها اجرا بشه
+// router.use(auth)
+// برای ایونایی که زیرش هست اجبار اجرای توکن میده 
 
-// Access to any newspaper
-// app.get('/api/papers/:id', (req, res)=>{
-//     res.send(req.params.id)
-// })
+router.get('/', auth, PapersController.getPapers);
 
-// Access to two newspapers
-// app.get('/api/papers/:id/:id2?', (req, res)=>{
-//     res.send([req.params.id, req.params.id2])
-// })
-
-// /api/papers/3/4?sort=id
 router.get('/:id/:id2', PapersController.getPaperSort);
 
 router.get('/:id', PapersController.getPaper);
 
-router.post('/', PapersController.postPaper);
+router.post('/', auth, PapersController.postPaper);
 
 router.put('/:id', PapersController.putPaper);
 

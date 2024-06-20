@@ -56,7 +56,7 @@ app.use('/api/users', userRoute);
 // For Home Page
 app.get("/api/", (reqm, res)=>{
     res.send("Hello Sothesom")
-});
+})
 
 // Environment variable (PORT) => .env file
 const port = process.env.PORT || 3000
