@@ -6,9 +6,11 @@ const helmet = require("helmet");
 const morgon = require("morgan");
 
 const paperRoute = require('./rourtes/papers-route');
+const userRoute = require('./rourtes/users-route')
 
 // To access the environment variable
 require('dotenv').config();
+
 const startdebug = require("debug")("startup");
 
 const app = express();
@@ -46,6 +48,9 @@ app.use((req,res,next)=>{
 
 // Route in middleware
 app.use('/api/papers', paperRoute);
+
+// Authentication
+app.use('/api/users', userRoute);
 
 
 // For Home Page
