@@ -1,21 +1,19 @@
-const { result } = require('underscore');
+const { result, constant } = require('underscore');
+const PapersModel = require('../models/papes-model');
+const errorHandler = require('../middelwares/error_handler');
+const {trycatchHandler} = require('../utilities/trycatch_handler');
 
-// Data Base
-const PapersModel = require('../models/papes-model')
 
-const getPaper = (req, res)=> {
-    PapersModel.getPaper(parseInt(req.params.id)).then((result)=>{
-        if (!result) res.status(404).send("روزنامه یافت نشد")
+const getPaper = trycatchHandler(async (req, res)=> {
+    const result = await PapersModel.getPaper(parseInt(req.params.id))
+    if (!result) res.status(404).send("روزنامه یافت نشد")
         res.send(result)
-    })
-    //const paper = Papers.find(c => c.id === Number(req.params.id))
-};
+});
 
-const getPapers =  (req, res)=> {
-    PapersModel.getPapers().then((result)=>{
-        res.send(result)
-    })
-}
+const getPapers = trycatchHandler(async(req, res)=> {
+    const result = await PapersModel.getPapers()
+    res.send(result)
+})
 
 const getPaperSort = (req, res)=>{
     res.send([req.params.id, req.params.id2, req.query.sort])

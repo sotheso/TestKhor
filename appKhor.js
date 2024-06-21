@@ -6,7 +6,8 @@ const helmet = require("helmet");
 const morgon = require("morgan");
 
 const paperRoute = require('./rourtes/papers-route');
-const userRoute = require('./rourtes/users-route')
+const userRoute = require('./rourtes/users-route');
+const errorHandler = require("./middelwares/error_handler");
 
 // To access the environment variable
 require('dotenv').config();
@@ -57,6 +58,9 @@ app.use('/api/users', userRoute);
 app.get("/api/", (reqm, res)=>{
     res.send("Hello Sothesom")
 })
+
+// middelwer for Error
+app.use(errorHandler)
 
 // Environment variable (PORT) => .env file
 const port = process.env.PORT || 3000

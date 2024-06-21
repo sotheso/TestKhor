@@ -7,7 +7,7 @@ const auth = require("../middelwares/auth")
 // router.use(auth)
 // برای ایونایی که زیرش هست اجبار اجرای توکن میده 
 
-router.get('/', auth, PapersController.getPapers);
+router.get('/', PapersController.getPapers);
 
 router.get('/:id/:id2', PapersController.getPaperSort);
 
