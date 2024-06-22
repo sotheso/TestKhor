@@ -5,6 +5,7 @@ const express = require("express");
 const helmet = require("helmet");
 const morgon = require("morgan");
 
+const homeRoute = require('./rourtes/home-route');
 const paperRoute = require('./rourtes/papers-route');
 const userRoute = require('./rourtes/users-route');
 const errorHandler = require("./middelwares/error_handler");
@@ -55,9 +56,7 @@ app.use('/api/users', userRoute);
 
 
 // For Home Page
-app.get("/api/", (reqm, res)=>{
-    res.send("Hello Sothesom")
-})
+app.get("/" , homeRoute);
 
 // middelwer for Error
 app.use(errorHandler)

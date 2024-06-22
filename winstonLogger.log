@@ -1,0 +1,14 @@
+{"level":"error","message":"this is message for winston"}
+{"level":"error","message":"this is message for winston"}
+{
+  level: 'error',
+  message: 'this is message for winston',
+  timestamp: '2024-06-22T18:04:08.200Z',
+  label: 'this is label'
+}
+{
+  level: 'error',
+  message: 'this is message for winston',
+  timestamp: '2024-06-22T18:07:37.978Z',
+  label: 'this is label'
+}

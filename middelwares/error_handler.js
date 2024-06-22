@@ -1,7 +1,10 @@
 const AppError = require("../utilities/app_errors")
+const logger = require('../utilities/winstonLogger')
 
 const errorHandler = (error, req, res, next) =>{
-    console.log(error)
+    // console.log(error)
+    logger.log("error", "this is message for winston")
+
     if (error.name === 'ValidationError')
         return res.status(500).send("validation is failed")
 
